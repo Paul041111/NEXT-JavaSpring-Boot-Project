@@ -8,7 +8,7 @@ export default function CreateArticle() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const router = useRouter();
-
+  
   async function handleSubmit(e) {
     e.preventDefault();
 

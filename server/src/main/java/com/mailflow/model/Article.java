@@ -3,6 +3,7 @@ package com.mailflow.model;
 public class Article {
 
     private Long id;
+    private Long userId;
     private String title;
     private String content;
 
@@ -28,5 +29,13 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getuserId() {
+        return userId;
+    }
+
+    public void setContent(Long userId) {
+        this.userId = userId;
     }
 }

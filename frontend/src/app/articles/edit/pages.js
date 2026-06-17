@@ -1,37 +1,44 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
-export default function EditArticlePage() {
-  const [title, setTitle] = useState("Old Title");
-  const [content, setContent] = useState("Old Content");
+export default function EditPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const submit = (e) => {
-    e.preventDefault();
+  const id = searchParams.get("id");
 
-    console.log({
-      title,
-      content,
-    });
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleUpdate = () => {
+    console.log("Updated:", { id, title, content });
+
+    // later call API here
+
+    router.push("/articles");
   };
 
   return (
-    <form onSubmit={submit}>
+    <div>
       <h1>Edit Article</h1>
 
       <input
+        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
       <textarea
+        placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
 
-      <button type="submit">
+      <button onClick={handleUpdate}>
         Update
       </button>
-    </form>
+    </div>
   );
 }

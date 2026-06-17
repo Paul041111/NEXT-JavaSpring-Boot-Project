@@ -50,7 +50,6 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-
         <br />
 
         <button type="submit">Login</button>
