@@ -5,7 +5,7 @@ import { signup } from "../../services/authService";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -13,7 +13,7 @@ export default function SignupPage() {
     e.preventDefault();
 
     try {
-      await signup({ username, password });
+      await signup({ email, password });
       alert("Signup successful");
       router.push("/login");
     } catch (err) {
@@ -27,9 +27,9 @@ export default function SignupPage() {
 
       <form onSubmit={handleSubmit}>
         <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <br />

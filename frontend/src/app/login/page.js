@@ -5,7 +5,7 @@ import { login } from "../../services/authService";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -13,32 +13,25 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await login({
-        username,
-        password,
-      });
-
-      localStorage.setItem("token", res.token);
-
-      // update navbar
-      window.dispatchEvent(new Event("storage"));
-
-      router.push("/articles");
+      await login({ email, password });
+      alert("Login successful");
+      localStorage.getItem("token");
+      router.push("/article");
     } catch (err) {
-      console.log(err);
+      alert(err)
       alert("Login failed");
     }
   }
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Log In</h1>
 
       <form onSubmit={handleSubmit}>
         <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <br />
@@ -52,7 +45,7 @@ export default function LoginPage() {
 
         <br />
 
-        <button type="submit">Login</button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

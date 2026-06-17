@@ -1,58 +1,27 @@
 package com.mailflow.controller;
 
-import com.mailflow.model.Article;
-import com.mailflow.repository.ArticleRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/articles")
-@CrossOrigin(origins = "*")
 public class ArticleController {
 
-  private final ArticleRepository repo;
+  private final List<Map<String, String>> articles = new ArrayList<>();
 
-  public ArticleController(ArticleRepository repo) {
-    this.repo = repo;
-  }
-
-  // GET ALL
   @GetMapping
-  public List<Article> getAll() {
-    return repo.findAll();
+  public List<Map<String, String>> getArticles() {
+    return articles;
   }
 
-  // GET ONE
-  @GetMapping("/{id}")
-  public Article getOne(@PathVariable String id) {
-    return repo.findById(id).orElse(null);
-  }
-
-  // CREATE
   @PostMapping
-  public Article create(@RequestBody Article article) {
-    return repo.save(article);
-  }
+  public Map<String, String> createArticle(
+      @RequestBody Map<String, String> article) {
 
-  // UPDATE
-  @PutMapping("/{id}")
-  public Article update(@PathVariable String id, @RequestBody Article newArticle) {
-
-    Article article = repo.findById(id).orElse(null);
-
-    if (article != null) {
-      article.setTitle(newArticle.getTitle());
-      article.setContent(newArticle.getContent());
-      return repo.save(article);
-    }
-
-    return null;
-  }
-
-  // DELETE
-  @DeleteMapping("/{id}")
-  public void delete(@PathVariable String id) {
-    repo.deleteById(id);
+    articles.add(article);
+    return article;
   }
 }
