@@ -16,7 +16,8 @@ export default function CreateArticle() {
       await createArticle({ title, content });
       router.push("/articles");
     } catch (err) {
-      alert("Error creating article");
+      console.log(err);
+      // alert("Error creating article");
     }
   }
 

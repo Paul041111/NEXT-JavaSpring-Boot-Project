@@ -11,9 +11,15 @@ export default function ArticleCard({ article }) {
           : article.content}
       </p>
 
-      <Link href={`/articles/detail?id=${article.id}`}>
+      <Link
+        href={`/articles/detail?title=${encodeURIComponent(
+          article.title
+        )}&content=${encodeURIComponent(article.content)}`}
+      >
         Read More
       </Link>
+
+
     </div>
   );
 }

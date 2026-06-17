@@ -8,7 +8,6 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
-  // check login state
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
@@ -19,10 +18,11 @@ export default function Navbar() {
 
     window.addEventListener("storage", checkAuth);
 
-    return () => window.removeEventListener("storage", checkAuth);
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
   }, []);
 
-  // logout function
   function handleLogout() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -35,11 +35,12 @@ export default function Navbar() {
         Articles
       </Link>
 
-      <Link href="/articles/create" style={{ marginRight: 10 }}>
-        Create
-      </Link>
+      {isLoggedIn && (
+        <Link href="/articles/create" style={{ marginRight: 10 }}>
+          Create
+        </Link>
+      )}
 
-      {/* LOGIN / LOGOUT SWITCH */}
       {!isLoggedIn ? (
         <>
           <Link href="/login" style={{ marginRight: 10 }}>
