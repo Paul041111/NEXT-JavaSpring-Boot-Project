@@ -1,32 +1,55 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getArticle } from "../../../services/articleService";
-import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { getArticles } from "../../../services/articleService";
 
-export default function ArticleDetail() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-
-  const [article, setArticle] = useState(null);
+export default function ArticlesPage() {
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    if (!id) return;
-
-    async function load() {
-      const data = await getArticle(id);
-      setArticle(data);
+    async function loadArticles() {
+      try {
+        const data = await getArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error("Failed to load articles:", error);
+      }
     }
 
-    load();
-  }, [id]);
-
-  if (!article) return <p>Loading...</p>;
+    loadArticles();
+  }, []);
 
   return (
     <div>
-      <h1>{article.title}</h1>
-      <p>{article.content}</p>
+      <h1>Articles</h1>
+
+      {articles.length === 0 ? (
+        <p>No articles found.</p>
+      ) : (
+        articles.map((article, index) => (
+          <div
+            key={article.id || index}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            <h2>{article.title}</h2>
+
+            <p>{article.content}</p>
+
+            <Link href={`/articles/detail?id=${article.id}`}>
+              View Details
+            </Link>
+
+            <Link href={`/articles`}>
+              Back
+            </Link>
+          </div>
+        ))
+      )}
     </div>
   );
 }
