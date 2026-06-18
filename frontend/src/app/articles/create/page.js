@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import { apiPost } from "../../../lib/api"
 export default function CreateArticlePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -10,12 +10,11 @@ export default function CreateArticlePage() {
     e.preventDefault();
 
     const email = localStorage.getItem("email");
-
-    const res = await fetch("/articles", {
+    const res = await fetch("http://localhost:8080/articles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "email": localStorage.getItem("email")
+        "email": email
       },
       body: JSON.stringify({
         title,
@@ -25,7 +24,7 @@ export default function CreateArticlePage() {
 
     if (res.ok) {
       alert("Article created!");
-      window.location.href = "/articles";
+      // window.location.href = "/articles";
     } else {
       alert("Error creating article");
     }
@@ -55,6 +54,7 @@ export default function CreateArticlePage() {
 
         <button type="submit">Create</button>
       </form>
+
     </div>
   );
 }

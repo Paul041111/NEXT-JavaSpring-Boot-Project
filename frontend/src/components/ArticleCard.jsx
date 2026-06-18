@@ -11,9 +11,8 @@ export default function ArticleCard({ article }) {
           ? article.content.slice(0, 100) + "..."
           : article.content}
       </p>
-
       <Link
-        href={`/articles/detail?title=${encodeURIComponent(article.title)}&content=${encodeURIComponent(article.content)}&content=${encodeURIComponent(article.userId)}`}
+        href={`/articles/detail?title=${encodeURIComponent(article.title)}&content=${encodeURIComponent(article.content)}&id=${encodeURIComponent(article.id)}`}
       >
         Read More
       </Link>

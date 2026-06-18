@@ -1,31 +1,65 @@
 package com.mailflow.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import com.mailflow.model.Article;
 import com.mailflow.repository.ArticleRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/articles")
+@CrossOrigin(origins = "*")
 public class ArticleController {
 
-  @Autowired
-  private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-  @GetMapping
-  public List<Article> getArticles() {
-    return articleRepository.findAll();
-  }
+    public ArticleController(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
-  @PostMapping // ✅ FIXED
-  public Article create(@RequestBody Article article,
-      @RequestHeader("email") String email) {
+    // GET ALL
+    @GetMapping
+    public List<Article> getAll() {
+        return articleRepository.findAll();
+    }
 
-    article.setOwnerEmail(email);
-    return articleRepository.save(article);
-  }
+    // GET BY ID (FIXED)
+    @GetMapping("/{id}")
+    public ResponseEntity<Article> getById(@PathVariable String id) {
+        return articleRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // CREATE
+    @PostMapping
+    public Article create(
+            @RequestBody Article article,
+            @RequestHeader("email") String email) {
+        System.out.println("Email: " + email);
+        return articleRepository.save(article);
+    }
+
+    // UPDATE
+    @PutMapping("/{id}")
+    public ResponseEntity<Article> update(@PathVariable String id, @RequestBody Article article) {
+        return articleRepository.findById(id)
+                .map(existing -> {
+                    article.setId(id); // keep same ID
+                    return ResponseEntity.ok(articleRepository.save(article));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        if (!articleRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        articleRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

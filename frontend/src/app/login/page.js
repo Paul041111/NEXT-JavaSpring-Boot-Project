@@ -15,8 +15,8 @@ export default function LoginPage() {
     try {
       await login({ email, password });
       alert("Login successful");
-      localStorage.setItem("token", "1")
-      window.location.href = "/articles";
+      localStorage.setItem("email", email)
+      window.location.href = "/";
     } catch (err) {
       alert(err)
       alert("Login failed");

@@ -7,11 +7,12 @@ import Loader from "../../components/Loader";
 export default function ArticlesPage() {
 
   const { articles, loading } = useArticles();
-  const currentUser =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("user"))
-      : null;
+  let currentUser = null;
 
+  if (typeof window !== "undefined") {
+    const user = localStorage.getItem("user");
+    currentUser = user ? JSON.parse(user) : null;
+  }
 
   if (loading) return <Loader />;
 

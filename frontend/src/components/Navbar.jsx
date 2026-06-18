@@ -6,12 +6,18 @@ import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState(null);
   const router = useRouter();
+
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
+      const storedEmail = localStorage.getItem("email");
+
       setIsLoggedIn(!!token);
+      setEmail(storedEmail);
     };
+
     checkAuth();
 
     window.addEventListener("storage", checkAuth);
@@ -22,9 +28,13 @@ export default function Navbar() {
   }, []);
 
   function handleLogout() {
+    localStorage.removeItem("email");
     localStorage.removeItem("token");
+
     setIsLoggedIn(false);
-    router.push("/login");
+    setEmail(null);
+
+    router.push("/");
   }
 
   return (
@@ -33,26 +43,24 @@ export default function Navbar() {
         Articles
       </Link>
 
-      {isLoggedIn && (
+      {email && (
         <Link href="/articles/create" style={{ marginRight: 10 }}>
           Create
         </Link>
       )}
 
-      {!isLoggedIn ? (
+      {!email ? (
         <>
           <Link href="/login" style={{ marginRight: 10 }}>
             Login
           </Link>
 
-          <Link href="/register">
-            Register
-          </Link>
+          <Link href="/register">Register</Link>
         </>
       ) : (
-        <button onClick={handleLogout} style={{ marginLeft: 10 }}>
-          Logout
-        </button>
+        <>
+          <button onClick={handleLogout}>Logout</button>
+        </>
       )}
     </nav>
   );
