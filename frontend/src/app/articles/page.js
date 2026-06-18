@@ -5,11 +5,13 @@ import ArticleCard from "../../components/ArticleCard";
 import Loader from "../../components/Loader";
 
 export default function ArticlesPage() {
+
   const { articles, loading } = useArticles();
   const currentUser =
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("user"))
       : null;
+
 
   if (loading) return <Loader />;
 

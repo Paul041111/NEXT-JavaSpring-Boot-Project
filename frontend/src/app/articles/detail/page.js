@@ -24,6 +24,14 @@ export default function ArticleDetail() {
         href={`/articles`}>
         Back
       </Link>
+      <Link
+        href={`/articles/edit`}>
+        Edit
+      </Link>
+      <Link
+        href={`/articles`}>
+        Delete
+      </Link>
 
     </div>
   );

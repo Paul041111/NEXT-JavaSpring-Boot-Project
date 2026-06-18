@@ -1,47 +1,60 @@
 "use client";
 
 import { useState } from "react";
-import { createArticle } from "../../../services/articleService";
-import { useRouter } from "next/navigation";
 
-export default function CreateArticle() {
+export default function CreateArticlePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const router = useRouter();
-  
-  async function handleSubmit(e) {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await createArticle({ title, content });
-      router.push("/articles");
-    } catch (err) {
-      console.log(err);
-      // alert("Error creating article");
+    const email = localStorage.getItem("email");
+
+    const res = await fetch("/articles", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "email": localStorage.getItem("email")
+      },
+      body: JSON.stringify({
+        title,
+        content
+      })
+    });
+
+    if (res.ok) {
+      alert("Article created!");
+      window.location.href = "/articles";
+    } else {
+      alert("Error creating article");
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create Article</h1>
+    <div>
+      <h2>Create Article</h2>
 
-      <input
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      <br />
+        <br />
 
-      <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
+        <textarea
+          placeholder="Content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
 
-      <br />
+        <br />
 
-      <button type="submit">Create</button>
-    </form>
+        <button type="submit">Create</button>
+      </form>
+    </div>
   );
 }

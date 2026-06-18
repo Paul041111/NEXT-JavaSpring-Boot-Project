@@ -9,5 +9,5 @@ export function getArticle(id) {
 }
 
 export function createArticle(data) {
-  return apiPost("/articles", data)
+  return apiPost(`/articles`, data);
 }

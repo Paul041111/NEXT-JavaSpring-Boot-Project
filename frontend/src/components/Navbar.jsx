@@ -7,13 +7,11 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
       setIsLoggedIn(!!token);
     };
-
     checkAuth();
 
     window.addEventListener("storage", checkAuth);

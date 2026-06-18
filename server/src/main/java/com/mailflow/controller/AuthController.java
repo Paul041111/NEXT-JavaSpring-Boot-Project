@@ -1,10 +1,8 @@
 package com.mailflow.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.mailflow.dto.LoginRequest;
 import java.util.HashMap;
 import java.util.Map;
 import com.mailflow.model.User;
@@ -34,11 +32,11 @@ public class AuthController {
     User user = userRepository.findByEmail(request.getEmail());
 
     if (user == null) {
-      return ResponseEntity.badRequest().body("User not found");
+      return ResponseEntity.badRequest().body(Map.of("message", "User not found"));
     }
 
-    Map<String, String> response = new HashMap<>();
-    response.put("message", "Login successful");
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(Map.of(
+        "message", "Login success",
+        "email", user.getEmail()));
   }
 }

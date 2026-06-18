@@ -1,27 +1,31 @@
 package com.mailflow.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.mailflow.model.Article;
+import com.mailflow.repository.ArticleRepository;
 
 @RestController
 @RequestMapping("/articles")
 public class ArticleController {
 
-  private final List<Map<String, String>> articles = new ArrayList<>();
+  @Autowired
+  private ArticleRepository articleRepository;
 
   @GetMapping
-  public List<Map<String, String>> getArticles() {
-    return articles;
+  public List<Article> getArticles() {
+    return articleRepository.findAll();
   }
 
-  @PostMapping
-  public Map<String, String> createArticle(
-      @RequestBody Map<String, String> article) {
+  @PostMapping // ✅ FIXED
+  public Article create(@RequestBody Article article,
+      @RequestHeader("email") String email) {
 
-    articles.add(article);
-    return article;
+    article.setOwnerEmail(email);
+    return articleRepository.save(article);
   }
 }

@@ -12,14 +12,26 @@ export default function EditPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleUpdate = () => {
-    console.log("Updated:", { id, title, content });
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-    // later call API here
+    try {
+      const email = localStorage.getItem("email");
 
-    router.push("/articles");
-  };
-
+      await fetch("http://127.0.0.1:8080/articles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "email": localStorage.getItem("email")
+        },
+        body: JSON.stringify({ title, content })
+      });
+      router.push("/articles");
+    } catch (err) {
+      console.log(err);
+      // alert("Error creating article");
+    }
+  }
   return (
     <div>
       <h1>Edit Article</h1>

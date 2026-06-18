@@ -15,8 +15,8 @@ export default function LoginPage() {
     try {
       await login({ email, password });
       alert("Login successful");
-      localStorage.getItem("token");
-      router.push("/article");
+      localStorage.setItem("token", "1")
+      window.location.href = "/articles";
     } catch (err) {
       alert(err)
       alert("Login failed");

@@ -1,18 +1,32 @@
 package com.mailflow.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "articles")
 public class Article {
 
-    private Long id;
-    private Long userId;
+    @Id
+    private String id;
+
+    private String ownerEmail;
     private String title;
     private String content;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public String getTitle() {
@@ -29,13 +43,5 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Long getuserId() {
-        return userId;
-    }
-
-    public void setContent(Long userId) {
-        this.userId = userId;
     }
 }
